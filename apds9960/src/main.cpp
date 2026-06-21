@@ -16,7 +16,7 @@ void setup()
 
 void loop() 
 {
-  //detectGesture();
+  detectGesture();
   //detectColor();
-  detectProximity();
+  //detectProximity();
 }
