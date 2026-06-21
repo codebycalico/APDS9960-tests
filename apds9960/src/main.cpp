@@ -11,12 +11,15 @@ void setup()
 {
     sensorSetup();
 
-    Serial.println("Gesture detection started...");
+    //Serial.println("Gesture detection started...");
 }
 
 void loop() 
 {
-  //detectGesture();
+  //debugGesture();
+  detectGesture();
+  delay(500);
   //detectColor();
-  detectProximity();
+  //detectProximity();
+  //detectAll();
 }

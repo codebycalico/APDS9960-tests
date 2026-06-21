@@ -26,6 +26,25 @@
 
 #include "sensor.h"
 
+void debugGesture() {
+     // Read proximity through the library first
+    int prox = -1;
+    if (APDS.proximityAvailable()) {
+        prox = APDS.readProximity();
+    }
+
+    uint8_t pdata   = readReg(0x9C);   // PDATA
+    uint8_t enable  = readReg(0x80);   // ENABLE
+    uint8_t control = readReg(0x8F);   // CONTROL - LED drive
+    uint8_t gconf4  = readReg(0xAB);   // GCONF4
+
+    Serial.print("LibProx: ");   Serial.print(prox);
+    Serial.print(" | PDATA: ");  Serial.print(pdata);
+    Serial.print(" | ENABLE: 0x"); Serial.print(enable, HEX);
+    Serial.print(" | CONTROL: 0x"); Serial.print(control, HEX);
+    Serial.print(" | GCONF4: 0x"); Serial.println(gconf4, HEX);
+}
+
 void detectGesture() {
     if (APDS.gestureAvailable()) {
         // a gesture was detected, read and print to Serial Monitor
@@ -33,29 +52,32 @@ void detectGesture() {
 
         switch (gesture) {  //Determine which gesture was captured
         case GESTURE_UP:
-            Serial.println("Detected UP gesture");
+            Serial.println("UP");
             break;
 
         case GESTURE_DOWN:
-            Serial.println("Detected DOWN gesture");
+            Serial.println("DOWN");
             break;
 
         case GESTURE_LEFT:
-            Serial.println("Detected LEFT gesture");
+            Serial.println("LEFT");
             break;
 
         case GESTURE_RIGHT:
-            Serial.println("Detected RIGHT gesture");
+            Serial.println("RIGHT");
             break;
 
         default:
             // ignore
+            Serial.println("NONE");
             break;
         }
+    } else {
+        Serial.println("Gesture detection unavailable.");
     }
 }
 
-
+/*
 void detectColor() {
      // check if a color reading is available
      // Wait for color reading to be available
@@ -96,3 +118,42 @@ void detectProximity() {
     // wait a bit before reading again
     delay(100);
 }
+
+void detectAll() {
+    if(!APDS.gestureAvailable()) {
+        Serial.println("Gesture detection unavailable.");
+        return;
+    }
+
+    if(!APDS.proximityAvailable()) {
+        Serial.println("Proximity detection unavailable.");
+        return;
+    }
+ 
+    // a gesture was detected, read and print to Serial Monitor
+    int gesture = APDS.readGesture();
+    int proximity = APDS.readProximity();
+
+    switch (gesture) {  //Determine which gesture was captured
+        case GESTURE_UP:
+            Serial.println("1 0 0 0 " + proximity);
+            break;
+
+        case GESTURE_DOWN:
+            Serial.println("0 1 0 0 " + proximity);
+            break;
+
+        case GESTURE_LEFT:
+            Serial.println("0 0 1 0 " + proximity);
+            break;
+
+        case GESTURE_RIGHT:
+            Serial.println("0 0 0 1 " + proximity);
+            break;
+
+        default:
+            // ignore
+            Serial.println("0 0 0 0 " + proximity);
+            break;
+    }
+} */
