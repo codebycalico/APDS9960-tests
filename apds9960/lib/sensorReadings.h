@@ -33,19 +33,19 @@ void detectGesture() {
 
         switch (gesture) {  //Determine which gesture was captured
         case GESTURE_UP:
-            Serial.println("Detected UP gesture");
+            Serial.println("UP");
             break;
 
         case GESTURE_DOWN:
-            Serial.println("Detected DOWN gesture");
+            Serial.println("DOWN");
             break;
 
         case GESTURE_LEFT:
-            Serial.println("Detected LEFT gesture");
+            Serial.println("LEFT");
             break;
 
         case GESTURE_RIGHT:
-            Serial.println("Detected RIGHT gesture");
+            Serial.println("RIGHT");
             break;
 
         default:
