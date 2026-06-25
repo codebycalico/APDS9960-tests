@@ -26,6 +26,10 @@
 
 #include "sensor.h"
 
+float timeout = 5000;
+float lastGestureDetection;
+bool timedOut = false;
+
 void detectGesture() {
     if (APDS.gestureAvailable()) {
         // a gesture was detected, read and print to Serial Monitor
@@ -34,25 +38,39 @@ void detectGesture() {
         switch (gesture) {  //Determine which gesture was captured
         case GESTURE_UP:
             Serial.println("UP");
+            lastGestureDetection = millis();
+            timedOut = false;
             break;
 
         case GESTURE_DOWN:
             Serial.println("DOWN");
+            lastGestureDetection = millis();
+            timedOut = false;
             break;
 
         case GESTURE_LEFT:
             Serial.println("LEFT");
+            lastGestureDetection = millis();
+            timedOut = false;
             break;
 
         case GESTURE_RIGHT:
             Serial.println("RIGHT");
+            lastGestureDetection = millis();
+            timedOut = false;
             break;
 
         default:
             // ignore
             Serial.println("NONE");
+            lastGestureDetection = millis();
+            timedOut = false;
             break;
         }
+    }
+    if(millis() - lastGestureDetection > timeout && !timedOut) {
+        Serial.println("TIMEOUT");
+        timedOut = true;
     }
 }
 
